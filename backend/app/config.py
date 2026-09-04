@@ -1,7 +1,14 @@
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv()
+# Search for .env file in root or backend directory
+env_path = Path(__file__).resolve().parent.parent.parent / ".env"
+if not env_path.exists():
+    env_path = Path(__file__).resolve().parent.parent / ".env"
+
+load_dotenv(dotenv_path=env_path)
+load_dotenv() # Fallback for system env
 
 class Settings:
     PROJECT_NAME: str = "FinPilot AI"
@@ -20,7 +27,7 @@ class Settings:
     SUPABASE_SERVICE_ROLE_KEY: str = os.getenv("SUPABASE_SERVICE_ROLE_KEY", "")
     
     GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
-    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
+    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", GROQ_API_KEY)
     LLM_API_KEY: str = GROQ_API_KEY or OPENAI_API_KEY
     GROQ_MODEL: str = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
     MARKET_API_KEY: str = os.getenv("MARKET_API_KEY", "")
