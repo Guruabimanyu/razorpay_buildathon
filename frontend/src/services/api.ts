@@ -669,8 +669,8 @@ export async function validateTaxRecord(subtotal: number, recordedTax: number, t
     });
     if (res.ok) return await res.json();
   } catch (e) {}
-  const expected = round(subtotal * taxRate, 2);
-  const diff = abs(recordedTax - expected);
+  const expected = Math.round(subtotal * taxRate * 100) / 100;
+  const diff = Math.abs(recordedTax - expected);
   return {
     subtotal,
     recorded_tax: recordedTax,
