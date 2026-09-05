@@ -18,12 +18,12 @@ export const AskFinPilotModal: React.FC<AskFinPilotModalProps> = ({ isOpen, onCl
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
 
   const sampleQuestions = [
-    "⚡ What is our current cash runway?",
-    "📊 Why did marketing expenses increase?",
-    "👥 Can we afford 10 new engineers?",
-    "⚠️ Show duplicate invoices and risk alerts",
-    "📈 Forecast cash balance for next 90 days",
-    "✂️ How can we cut ₹10 lakh in opex?",
+    { icon: "⚡", prompt: "What is our current cash runway?" },
+    { icon: "📊", prompt: "Why did marketing expenses increase?" },
+    { icon: "👥", prompt: "Can we afford 10 new engineers?" },
+    { icon: "⚠️", prompt: "Show duplicate invoices and risk alerts" },
+    { icon: "📈", prompt: "Forecast cash balance for next 90 days" },
+    { icon: "✂️", prompt: "How can we cut ₹10 lakh in opex?" },
   ];
 
   useEffect(() => {
@@ -37,19 +37,19 @@ export const AskFinPilotModal: React.FC<AskFinPilotModalProps> = ({ isOpen, onCl
     const q = (queryToAsk !== undefined ? queryToAsk : inputQuery).trim();
     if (!q) return;
 
+    setInputQuery(q);
     setIsLoading(true);
     setAgentSteps([]);
 
-    const steps = ["Cash Flow Engine", "Budget & Risk Scanner", "Groq AI CFO Model"];
+    const steps = ["Cash Flow Engine", "Digital Twin Hiring Simulator", "Groq AI CFO Model"];
     for (let i = 0; i < steps.length; i++) {
-      await new Promise(r => setTimeout(r, 120));
+      await new Promise(r => setTimeout(r, 100));
       setAgentSteps(prev => [...prev, steps[i]]);
     }
 
     const result = await askFinPilotCFO(q);
     setHistory(prev => [result, ...prev]);
     setIsLoading(false);
-    setInputQuery('');
   };
 
   const handleCopy = (text: string, idx: number) => {
@@ -106,22 +106,21 @@ export const AskFinPilotModal: React.FC<AskFinPilotModalProps> = ({ isOpen, onCl
               <span>Suggested Helper Prompts</span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {sampleQuestions.map((sq, idx) => {
-                const cleanPrompt = sq.replace(/^[^\w\s\d]+/u, '').trim();
-                return (
-                  <button
-                    key={idx}
-                    onClick={() => {
-                      setInputQuery(cleanPrompt);
-                      handleAsk(cleanPrompt);
-                    }}
-                    className="text-xs bg-[#171717] hover:bg-[#2f2f2f] border border-[#2f2f2f] hover:border-blue-500/40 text-slate-300 hover:text-white p-3 rounded-xl transition-all text-left font-medium flex items-center justify-between group cursor-pointer"
-                  >
-                    <span>{sq}</span>
-                    <span className="text-slate-500 group-hover:text-blue-400 transition-colors text-sm">→</span>
-                  </button>
-                );
-              })}
+              {sampleQuestions.map((item, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => {
+                    handleAsk(item.prompt);
+                  }}
+                  className="text-xs bg-[#171717] hover:bg-[#2f2f2f] border border-[#2f2f2f] hover:border-blue-500/40 text-slate-300 hover:text-white p-3 rounded-xl transition-all text-left font-medium flex items-center justify-between group cursor-pointer"
+                >
+                  <span className="flex items-center gap-2">
+                    <span>{item.icon}</span>
+                    <span>{item.prompt}</span>
+                  </span>
+                  <span className="text-slate-500 group-hover:text-blue-400 transition-colors text-sm">→</span>
+                </button>
+              ))}
             </div>
           </div>
 
