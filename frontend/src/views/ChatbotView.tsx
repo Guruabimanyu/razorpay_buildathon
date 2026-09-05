@@ -135,9 +135,11 @@ Company Context: NovaTech AI Systems holds ₹4.82 Cr cash reserves, ₹1.54 Cr 
 Format your response cleanly in GitHub-style markdown. Always include:
 1. Header tag e.g. [FINPILOT DATA], [LIVE MARKET], [DIGITAL TWIN], or [RISK AUDIT]
 2. Direct executive answer to the user's prompt
-3. Detailed bullet points & key metrics
+3. Detailed bullet points & key metrics (use markdown tables | Metric | Value | when appropriate)
 4. **Reasoning:** Detailed explanation
-5. **Recommendation:** 2-3 prioritized actionable steps.`
+5. **Recommendation:** 2-3 prioritized actionable steps.
+
+Formatting rule: Do NOT output raw LaTeX math wrappers like \\[ ... \\] or \\( ... \\). Use clean text math symbols (÷, ×, =, /).`
             },
             {
               role: "user",
