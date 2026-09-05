@@ -3,6 +3,7 @@ import { Navbar } from './components/Navbar';
 import { Sidebar } from './components/Sidebar';
 import { HackathonDemoBar } from './components/HackathonDemoBar';
 import { AskFinPilotModal } from './components/AskFinPilotModal';
+import { BootingDashboard } from './components/BootingDashboard';
 
 // Views
 import { OverviewView } from './views/OverviewView';
@@ -43,11 +44,12 @@ import { AICommandCenterView } from './views/AICommandCenterView';
 import { AccountingOSView } from './views/AccountingOSView';
 
 export const App: React.FC = () => {
-  const [activeView, setActiveView] = useState<string>('overview');
+  const [activeView, setActiveView] = useState<string>('control-tower');
   const [currentOrg, setCurrentOrg] = useState<string>('NovaTech AI Systems');
   const [isAskCFOOpen, setIsAskCFOOpen] = useState<boolean>(false);
   const [askCFOQuery, setAskCFOQuery] = useState<string>('');
   const [presetScenario, setPresetScenario] = useState<any>(null);
+  const [showBootingScreen, setShowBootingScreen] = useState<boolean>(true);
 
   const handleOpenAskCFO = (initialQuery?: string) => {
     setAskCFOQuery(initialQuery || '');
@@ -76,6 +78,15 @@ export const App: React.FC = () => {
   return (
     <div className="flex h-screen bg-[#0B132B] text-slate-100 overflow-hidden font-sans">
       
+      {/* Booting Splash Landing Dashboard */}
+      {showBootingScreen && (
+        <BootingDashboard
+          currentOrg={currentOrg}
+          onSelectOrg={setCurrentOrg}
+          onBootComplete={() => setShowBootingScreen(false)}
+        />
+      )}
+
       {/* Sidebar Navigation */}
       <Sidebar activeView={activeView} onSelectView={setActiveView} currentOrg={currentOrg} />
 
